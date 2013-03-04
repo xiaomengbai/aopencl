@@ -1,0 +1,39 @@
+This project create typical CLInfo/clinfo for a Nexus-4 (possibly Nexus 10) phone.
+Here are steps to create android app (ensure java-1.6, ant, gcc > 4.6, android-ndk >= r8 , android-sdk )are present):
+ * hg clone https://sgorti@code.google.com/p/aopencl/
+ * cd aopencl/clinfo
+ * create a shell script env1.sh that look like:
+cat env1.sh 
+P1=/opt/android/android-sdk-linux/platform-tools/:/opt/android/android-sdk-linux/tools/:/opt/android-ndk-r8d
+export NDK=/opt/android-ndk-r8d/
+export PATH=$P1:$PATH
+
+ * ndk-build 
+  * Above command will create JNI .so file in lib 
+ * android update project -p . -n clinfo -t 11
+   * Above command will create build.xml for ant command
+ * ant debug
+ * Connect phone via USB-cable to computer (Enable 'USB Debugging' in settings)
+  * Ensure 'adb devices' shows your phone device
+ * adb install bin/clinfo-debug.apk 
+ * Execute the CLInfo in your phone
+
+
+
+CLInfo is taken from: http://starpu.gforge.inria.fr/testing/coverage_6127/socl/examples/clinfo/clinfo.c.gcov.html
+
+Base project for dlsym ampping is at https://bitbucket.org/codedivine/testcln10/src
+README for that project is:
+
+I show a very small sample of how to load and use OpenCL functions on devices like Nexus 4 and Nexus 10. 
+My approach is somewhat different than other solutions.
+I check the existence of various known OpenCL driver libraries (such as libGLES_mali.so on T604 based devices) or libOpenCL.so using dlopen. 
+Then I load the OpenCL function using dlsym. 
+This does not require you to link your application against any proprietary blobs. 
+Proprietary blobs present on the device are loaded at runtime. 
+This approach also ensures that we can simply check for libraries from multiple vendors, making it more portable.
+
+You do not need to install any GPU SDK (such as Mali SDK) to build the code. 
+You also do not need to retrive any proprietary blobs from your device. We use standard Khronos headers. 
+
+

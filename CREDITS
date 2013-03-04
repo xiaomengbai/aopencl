@@ -1,0 +1,3 @@
+
+Code for dlsym mapping is taken from https://bitbucket.org/codedivine/testcln10/ written by Rahul Garg (at http://codedivine.org/) . 
+CLInfo code is from: http://starpu.gforge.inria.fr/testing/coverage_6127/socl/examples/clinfo/clinfo.c.gcov.html
