@@ -32,8 +32,8 @@ int main(int argc, char* argv[])
 	cl_uint numPlatforms;//the NO. of platforms
 	cl_platform_id platform = NULL;//the chosen platform
 	IAH();
-	PP(aclGetPlatformIDs);
-	cl_int	status = aclGetPlatformIDs(0, NULL, &numPlatforms);
+	PP(clGetPlatformIDs);
+	cl_int	status = clGetPlatformIDs(0, NULL, &numPlatforms);
 	if (status != CL_SUCCESS)
 	{
 		printf("Error: Getting platforms!\n");
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	{
 		cl_platform_id* platforms = (cl_platform_id* )malloc(numPlatforms* sizeof(cl_platform_id));
 		IAH();
-		status = aclGetPlatformIDs(numPlatforms, platforms, NULL);
+		status = clGetPlatformIDs(numPlatforms, platforms, NULL);
 		platform = platforms[0];
 		free(platforms);
 	}
@@ -54,35 +54,35 @@ int main(int argc, char* argv[])
 	cl_uint				numDevices = 0;
 	cl_device_id        *devices;
 	IAH();
-	PP(aclGetDeviceIDs);
-	status = aclGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 0, NULL, &numDevices);	
+	PP(clGetDeviceIDs);
+	status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 0, NULL, &numDevices);	
 	if (numDevices == 0) //no GPU available.
 	{
 		printf("No GPU device available.\n");
 		printf("Choose CPU as default device.\n");
 		IAH();
-		status = aclGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 0, NULL, &numDevices);	
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 0, NULL, &numDevices);	
 		devices = (cl_device_id*)malloc(numDevices * sizeof(cl_device_id));
 
 		IAH();
-		status = aclGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, numDevices, devices, NULL);
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, numDevices, devices, NULL);
 	}
 	else
 	{
 		devices = (cl_device_id*)malloc(numDevices * sizeof(cl_device_id));
 
 		IAH();
-		status = aclGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, numDevices, devices, NULL);
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, numDevices, devices, NULL);
 	}
 	
 
 	/*Step 3: Create context.*/
 	IAH();
-	cl_context context = aclCreateContext(NULL,1, devices,NULL,NULL,NULL);
+	cl_context context = clCreateContext(NULL,1, devices,NULL,NULL,NULL);
 	
 	/*Step 4: Creating command queue associate with the context.*/
 	IAH();
-	cl_command_queue commandQueue = aclCreateCommandQueue(context, devices[0], 0, NULL);
+	cl_command_queue commandQueue = clCreateCommandQueue(context, devices[0], 0, NULL);
 
 	/*Step 5: Create program object */
 	//const char *filename = "HelloWorld_Kernel.cl";
@@ -91,11 +91,11 @@ int main(int argc, char* argv[])
 	const char *source = KERNEL_SRC;//sourceStr.c_str();
 	size_t sourceSize[] = {strlen(source)};
 	IAH();
-	cl_program program = aclCreateProgramWithSource(context, 1, &source, sourceSize, NULL);
+	cl_program program = clCreateProgramWithSource(context, 1, &source, sourceSize, NULL);
 	
 	/*Step 6: Build program. */
 	IAH();
-	status=aclBuildProgram(program, 1,devices,NULL,NULL,NULL);
+	status=clBuildProgram(program, 1,devices,NULL,NULL,NULL);
 
 	/*Step 7: Initial input,output for the host and create memory objects for the kernel*/
 	const char* input = "GdkknVnqkc";
@@ -104,45 +104,45 @@ int main(int argc, char* argv[])
 	char *output = (char*) malloc(strlength + 1);
 
 	IAH();
-	cl_mem inputBuffer = aclCreateBuffer(context, CL_MEM_READ_ONLY|CL_MEM_COPY_HOST_PTR, (strlength + 1) * sizeof(char),(void *) input, NULL);
+	cl_mem inputBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY|CL_MEM_COPY_HOST_PTR, (strlength + 1) * sizeof(char),(void *) input, NULL);
 	IAH();
-	cl_mem outputBuffer = aclCreateBuffer(context, CL_MEM_WRITE_ONLY , (strlength + 1) * sizeof(char), NULL, NULL);
+	cl_mem outputBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY , (strlength + 1) * sizeof(char), NULL, NULL);
 
 	/*Step 8: Create kernel object */
 	IAH();
-	cl_kernel kernel = aclCreateKernel(program,"helloworld", NULL);
+	cl_kernel kernel = clCreateKernel(program,"helloworld", NULL);
 
 	/*Step 9: Sets Kernel arguments.*/
 	IAH();
-	status = aclSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&inputBuffer);
+	status = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&inputBuffer);
 	IAH();
-	status = aclSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&outputBuffer);
+	status = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&outputBuffer);
 	
 	/*Step 10: Running the kernel.*/
 	size_t global_work_size[1] = {strlength};
 	IAH();
-	status = aclEnqueueNDRangeKernel(commandQueue, kernel, 1, NULL, global_work_size, NULL, 0, NULL, NULL);
+	status = clEnqueueNDRangeKernel(commandQueue, kernel, 1, NULL, global_work_size, NULL, 0, NULL, NULL);
 
 	/*Step 11: Read the cout put back to host memory.*/
 	IAH();
-	status = aclEnqueueReadBuffer(commandQueue, outputBuffer, CL_TRUE, 0, strlength * sizeof(char), output, 0, NULL, NULL);
+	status = clEnqueueReadBuffer(commandQueue, outputBuffer, CL_TRUE, 0, strlength * sizeof(char), output, 0, NULL, NULL);
 	
 	output[strlength] = '\0';//Add the terminal character to the end of output.
 	printf("output string: %s\n",output);
 
 	/*Step 12: Clean the resources.*/
 	IAH();
-	status = aclReleaseKernel(kernel);//*Release kernel.
+	status = clReleaseKernel(kernel);//*Release kernel.
 	IAH();
-	status = aclReleaseProgram(program);	//Release the program object.
+	status = clReleaseProgram(program);	//Release the program object.
 	IAH();
-	status = aclReleaseMemObject(inputBuffer);//Release mem object.
+	status = clReleaseMemObject(inputBuffer);//Release mem object.
 	IAH();
-	status = aclReleaseMemObject(outputBuffer);
+	status = clReleaseMemObject(outputBuffer);
 	IAH();
-	status = aclReleaseCommandQueue(commandQueue);//Release  Command queue.
+	status = clReleaseCommandQueue(commandQueue);//Release  Command queue.
 	IAH();
-	status = aclReleaseContext(context);//Release context.
+	status = clReleaseContext(context);//Release context.
 
 	IAH();
 	if (output != NULL)
