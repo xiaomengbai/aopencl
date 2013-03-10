@@ -1,0 +1,28 @@
+#  use glob syntax.
+syntax: glob
+
+*.elc
+*.pyc
+*.swp
+*.swo
+*.zip
+*.class
+*.jar
+*.so
+*.tar
+*.tar
+*.doc
+*.xls
+*.gz
+*.d
+*.a
+*.o
+*~
+
+# switch to regexp syntax.
+syntax: regexp
+^\.pc/
+^q+$
+^tags$
+^.*/libs/armeabi-.*/.*$
+^.*/obj/local/armeabi.*/.*$
