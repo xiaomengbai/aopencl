@@ -654,13 +654,20 @@ void initFns(const char** libs,int len);
 //#define clUnloadCompiler aclUnloadCompiler
  cl_int 
 (*aclUnloadCompiler)(void);
+
+ 
   
 // getting error for this  
 //void *  
 //(*aclGetExtensionFunctionAddress)(const char * /* func_name */);
 
 #endif
-
+//UT: to check non existent symbol in .so file
+#if 0
+ cl_int 
+(*aclQQ)(void);
+#endif
+ 
 #ifdef __cplusplus
 }
 #endif

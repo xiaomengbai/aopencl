@@ -19,16 +19,23 @@ static int loadedCL;
 #define LIB_LLVM   "/system/lib/libllvm-a3xx.so"
 
 #define GET_SYM(fn) a##fn
-#define MAP_SYM(fn) *(void **) (&GET_SYM(fn)) = dlsym(handle,#fn);IAH();
+
+#define MAP_SYM(fn) do {*(void **) (&GET_SYM(fn)) = dlsym(handle,#fn);\
+  if(a##fn == 0){\
+    printf("Can't get mapping for method:%s in shared libraey:%s\n",#fn, curOpenCLLibName);\
+  }\
+  IAH();\
+}while(0)
 
 static const char* DEF_SO_LOCS[]={
 	LIB_OPENCL, LIB_GLES_MALI, LIB_LLVM
 	};
 static const int DEF_SO_LOCS_LEN = 3;
+static char* curOpenCLLibName="Unknown";
 
 static void *getCLHandle(const char** libs,int len){
   int i=0;
-  printf("Trying shared library at following locations:");
+  printf("Trying shared libraries at following locations:");
   for(;i<len;i++  ){
       printf("%s, ",libs[i]);
   }
@@ -37,11 +44,12 @@ static void *getCLHandle(const char** libs,int len){
   for(;i<len;i++  ){
     void* so = dlopen(libs[i],RTLD_LAZY);
     if ( so != 0 ){
-      printf("Using the Shared libarey:%s\n",libs[i]);
+      printf("Using the Shared library:%s\n",libs[i]);
+      curOpenCLLibName=strdup(libs[i]);
       return so;
     }
   }
-  printf("Could not resolve with any of above shared libraries\n");
+  printf("Could not resolve OpenCL shared library with any of above shared libraries\n");
   return 0;
 }
 
@@ -116,6 +124,8 @@ void initFns(const char** libs, int len){
   MAP_SYM(clEnqueueNDRangeKernel);
   MAP_SYM(clEnqueueTask);
   MAP_SYM(clEnqueueNativeKernel);
+
+//  MAP_SYM(clQQ); //UT: to check non existent symbol in .so file
   //MAP_SYM(clSetCommandQueueProperty);
 //  MAP_SYM(clCreateImage2D);
   //MAP_SYM(clCreateImage3D);
