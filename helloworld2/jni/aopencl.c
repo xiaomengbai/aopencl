@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "aopencl.h"
+#include "android/log.h"
 
 static int loadedCL;
 #define LIB_OPENCL "/system/lib/libOpenCL.so"
@@ -20,9 +21,17 @@ static int loadedCL;
 
 #define GET_SYM(fn) a##fn
 
+#define LOGV(F, ...) __android_log_print(ANDROID_LOG_VERBOSE, "aopencl", F, ##__VA_ARGS__)
+#define LOGD(F, ...) __android_log_print(ANDROID_LOG_DEBUG, "aopencl", F, ##__VA_ARGS__)
+#define LOGW(F, ...) __android_log_print(ANDROID_LOG_WARN, "aopencl", F, ##__VA_ARGS__)
+#define LOGE(F, ...) __android_log_print(ANDROID_LOG_ERROR, "aopencl", F, ##__VA_ARGS__)
+
+
+
+
 #define MAP_SYM(fn) do {*(void **) (&GET_SYM(fn)) = dlsym(handle,#fn);\
   if(a##fn == 0){\
-    printf("Can't get mapping for method:%s in shared libraey:%s\n",#fn, curOpenCLLibName);\
+    LOGW("Can't get mapping for method:%s in shared libraey:%s\n",#fn, curOpenCLLibName);\
   }\
   IAH();\
 }while(0)
@@ -35,21 +44,20 @@ static char* curOpenCLLibName="Unknown";
 
 static void *getCLHandle(const char** libs,int len){
   int i=0;
-  printf("Trying shared libraries at following locations:");
+  LOGD("Trying shared libraries at following locations:\n");
   for(;i<len;i++  ){
-      printf("%s, ",libs[i]);
+      LOGD("%s\n",libs[i]);
   }
-  printf("\n");
   i=0;
   for(;i<len;i++  ){
     void* so = dlopen(libs[i],RTLD_LAZY);
     if ( so != 0 ){
-      printf("Using the Shared library:%s\n",libs[i]);
+      LOGD("Using the Shared library:%s\n",libs[i]);
       curOpenCLLibName=strdup(libs[i]);
       return so;
     }
   }
-  printf("Could not resolve OpenCL shared library with any of above shared libraries\n");
+  LOGE("Could not resolve OpenCL shared library with any of above shared libraries\n");
   return 0;
 }
 

@@ -17,11 +17,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 //For clarity,error checking has been omitted.
 #include <CL/cl.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+//#include <string.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 #include <iostream>
-#include <string>
+//#include <string>
 #include <fstream>
 using namespace std;
 

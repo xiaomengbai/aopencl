@@ -18,14 +18,16 @@ LOCAL_C_INCLUDES := aopencl.h
 LOCAL_SRC_FILES :=  aopencl.c
 
 # Optional compiler flags.
-LOCAL_LDLIBS   = -lz -lm
+LOCAL_LDLIBS   = -lz -lm -llog
 LOCAL_CFLAGS   = -Wall -pedantic -std=c99 -g
-
 include $(BUILD_STATIC_LIBRARY)
 
-# First lib, which will be built statically.
+# Now executable using C++
 include $(CLEAR_VARS)
 LOCAL_MODULE := helloworld2
+# Optional compiler flags.
+LOCAL_LDLIBS   = -llog
+#LOCAL_CFLAGS   = -Wall -pedantic -g
 LOCAL_STATIC_LIBRARIES := aopencl
 LOCAL_C_INCLUDES := aopencl_def.h
 LOCAL_SRC_FILES := HelloWorld.cpp
