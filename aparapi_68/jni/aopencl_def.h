@@ -1,0 +1,79 @@
+/**********************************************************************
+Copyright (c) 2013  GSS Mahadevan
+*/
+#ifndef __AOPENCL_DEF_H__
+#define __AOPENCL_DEF_H__ 1
+
+#define clGetPlatformIDs aclGetPlatformIDs
+#define clGetPlatformInfo aclGetPlatformInfo
+#define clGetDeviceIDs aclGetDeviceIDs
+#define clGetDeviceInfo aclGetDeviceInfo
+#define clCreateContext aclCreateContext
+#define clCreateContextFromType aclCreateContextFromType
+#define clRetainContext aclRetainContext
+#define clReleaseContext aclReleaseContext
+#define clGetContextInfo aclGetContextInfo
+#define clCreateCommandQueue aclCreateCommandQueue
+#define clRetainCommandQueue aclRetainCommandQueue
+#define clReleaseCommandQueue aclReleaseCommandQueue
+#define clGetCommandQueueInfo aclGetCommandQueueInfo
+#define clCreateBuffer aclCreateBuffer
+#define clCreateSubBuffer aclCreateSubBuffer
+#define clRetainMemObject aclRetainMemObject
+#define clReleaseMemObject aclReleaseMemObject
+#define clGetSupportedImageFormats aclGetSupportedImageFormats
+#define clGetMemObjectInfo aclGetMemObjectInfo
+#define clGetImageInfo aclGetImageInfo
+#define clSetMemObjectDestructorCallback aclSetMemObjectDestructorCallback
+#define clCreateSampler aclCreateSampler
+#define clRetainSampler aclRetainSampler
+#define clReleaseSampler aclReleaseSampler
+#define clGetSamplerInfo aclGetSamplerInfo
+#define clCreateProgramWithSource aclCreateProgramWithSource
+#define clCreateProgramWithBinary aclCreateProgramWithBinary
+#define clRetainProgram aclRetainProgram
+#define clReleaseProgram aclReleaseProgram
+#define clBuildProgram aclBuildProgram
+#define clGetProgramInfo aclGetProgramInfo
+#define clGetProgramBuildInfo aclGetProgramBuildInfo
+#define clCreateKernel aclCreateKernel
+#define clCreateKernelsInProgram aclCreateKernelsInProgram
+#define clRetainKernel aclRetainKernel
+#define clReleaseKernel aclReleaseKernel
+#define clSetKernelArg aclSetKernelArg
+#define clGetKernelInfo aclGetKernelInfo
+#define clGetKernelWorkGroupInfo aclGetKernelWorkGroupInfo
+#define clWaitForEvents aclWaitForEvents
+#define clGetEventInfo aclGetEventInfo
+#define clCreateUserEvent aclCreateUserEvent
+#define clRetainEvent aclRetainEvent
+#define clReleaseEvent aclReleaseEvent
+#define clSetUserEventStatus aclSetUserEventStatus
+#define clSetEventCallback aclSetEventCallback
+#define clGetEventProfilingInfo aclGetEventProfilingInfo
+#define clFlush aclFlush
+#define clFinish aclFinish
+#define clEnqueueReadBuffer aclEnqueueReadBuffer
+#define clEnqueueReadBufferRect aclEnqueueReadBufferRect
+#define clEnqueueWriteBuffer aclEnqueueWriteBuffer
+#define clEnqueueWriteBufferRect aclEnqueueWriteBufferRect
+#define clEnqueueCopyBuffer aclEnqueueCopyBuffer
+#define clEnqueueCopyBufferRect aclEnqueueCopyBufferRect
+#define clEnqueueReadImage aclEnqueueReadImage
+#define clEnqueueWriteImage aclEnqueueWriteImage
+#define clEnqueueCopyImage aclEnqueueCopyImage
+#define clEnqueueCopyImageToBuffer aclEnqueueCopyImageToBuffer
+#define clEnqueueCopyBufferToImage aclEnqueueCopyBufferToImage
+#define clEnqueueUnmapMemObject aclEnqueueUnmapMemObject
+#define clEnqueueNDRangeKernel aclEnqueueNDRangeKernel
+#define clEnqueueTask aclEnqueueTask
+#define clEnqueueNativeKernel aclEnqueueNativeKernel
+#define clSetCommandQueueProperty aclSetCommandQueueProperty
+#define clCreateImage2D aclCreateImage2D
+#define clCreateImage3D aclCreateImage3D
+#define clEnqueueMarker aclEnqueueMarker
+#define clEnqueueWaitForEvents aclEnqueueWaitForEvents
+#define clEnqueueBarrier aclEnqueueBarrier
+#define clUnloadCompiler aclUnloadCompiler
+
+#endif
