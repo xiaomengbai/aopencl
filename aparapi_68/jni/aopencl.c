@@ -37,7 +37,8 @@ static int loadedCL;
 }while(0)
 
 static const char* DEF_SO_LOCS[]={
-	LIB_OPENCL, LIB_GLES_MALI, LIB_LLVM
+	LIB_OPENCL
+/*, LIB_GLES_MALI, LIB_LLVM */
 	};
 static const int DEF_SO_LOCS_LEN = 3;
 static char* curOpenCLLibName="Unknown";

@@ -147,6 +147,7 @@ static int loadedCL;
 void *getCLHandle(){
   void *res = NULL;
   res = dlopen("/system/lib/libOpenCL.so",RTLD_LAZY);
+#if 0
   if(res==NULL){
     res = dlopen("/system/vendor/lib/egl/libGLES_mali.so",RTLD_LAZY);
   }
@@ -156,6 +157,7 @@ void *getCLHandle(){
   /*  if(res==NULL){
     res = dlopen("/home/rahul/stream/sdk2.7/lib/x86_64/libOpenCL.so",RTLD_LAZY);
   }*/
+#endif
   if(res==NULL) printf("Could not open library :(\n");
   else printf("loaded some library\n");
   return res;
