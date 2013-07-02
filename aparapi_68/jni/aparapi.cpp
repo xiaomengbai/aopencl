@@ -435,11 +435,12 @@ class JNIContext{
                         //fprintf(stderr, "platform %d %s\n", i, pbuf); 
                         LOGV( "platform %d %s\n", i, pbuf); 
                      }
-                     if (!strcmp(pbuf, "Advanced Micro Devices, Inc.") || 
-			 !strcmp(pbuf,"QUALCOMM")
-			) {
-                        platform = platforms[i];
-                     }
+                     if (strcmp(pbuf, "Advanced Micro Devices, Inc.") && 
+						 strcmp(pbuf,"QUALCOMM")
+						) {
+                        LOGW( "Unknown platform @%d vendor:%s\n", i, pbuf); 
+				     }	
+					 platform = platforms[i];
                   }
 
                   // Get the # of devices
