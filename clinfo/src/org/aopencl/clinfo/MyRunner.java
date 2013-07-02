@@ -24,7 +24,7 @@ public class MyRunner implements Runnable {
 	@Override
 	public void run() {
 		m_ma.setResultText(m_ma.getClInfo());
-		UnsafeWrapper.test();
+		//UnsafeWrapper.test();
 	}
 
 }

@@ -19,12 +19,24 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "android/log.h"
+
+#define LOGV(F, ...) __android_log_print(ANDROID_LOG_VERBOSE, "aparapi", F, ##__VA_ARGS__)
+#define LOGD(F, ...) __android_log_print(ANDROID_LOG_DEBUG, "aparapi", F, ##__VA_ARGS__)
+#define LOGW(F, ...) __android_log_print(ANDROID_LOG_WARN, "aparapi", F, ##__VA_ARGS__)
+#define LOGE(F, ...) __android_log_print(ANDROID_LOG_ERROR, "aparapi", F, ##__VA_ARGS__)
+
+
+
+
 #define GET_SIZET(CL_D,str) { \
    size_t val; \
    err = rclGetDeviceInfo(devices[j], CL_D, sizeof(val), &val, NULL); \
    if (err !=  CL_SUCCESS){\
+  LOGW("GET_SIZET " #CL_D " --> %s err:%d\n",str,err);\
   index += sprintf(&result[index], "Error:" #CL_D ":%d\n", err); \
    }else{\
+  LOGV("GET_SIZET " #CL_D " --> %s val:%d\n",str,val);\
   index += sprintf(&result[index], str, (unsigned int)val); \
    }\
 }
@@ -35,8 +47,10 @@
    /*checkErr(err, "clGetDeviceInfo(" #CL_D ")");*/ \
    /*printf(str, val); */\
    if (err !=  CL_SUCCESS){\
+  LOGW("GET_STRING " #CL_D " --> %s err:%d\n",str,err);\
   index += sprintf(&result[index], "Error:" #CL_D ":%d\n", err); \
    }else{\
+  LOGV("GET_STRING " #CL_D " --> %s val:%s\n",str,val);\
   index += sprintf(&result[index], str, val); \
    }\
 }
@@ -47,8 +61,10 @@
    /* checkErr(err, "clGetDeviceInfo(" #CL_D ")"); */\
    /*printf(str, val); */\
    if (err !=  CL_SUCCESS){\
+  LOGW("GET_UINT " #CL_D " --> %s err:%d\n",str,err);\
   index += sprintf(&result[index], "Error:" #CL_D ":%d\n", err); \
    }else{\
+  LOGV("GET_UINT " #CL_D " --> %s val:0x%x\n",str,val);\
   index += sprintf(&result[index], str, val); \
    }\
 }
@@ -59,8 +75,10 @@
    /* checkErr(err, "clGetDeviceInfo(" #CL_D ")"); */\
    /* printf(str, val); */\
    if (err !=  CL_SUCCESS){\
+  LOGW("GET_ULONG " #CL_D " --> %s err:%d\n",str,err);\
   index += sprintf(&result[index], "Error:" #CL_D ":%d\n", err); \
    }else{\
+  LOGV("GET_ULONG " #CL_D " --> %s val:0x%x\n",str,val);\
   index += sprintf(&result[index], str, val); \
    }\
 }
@@ -71,8 +89,10 @@
    /* checkErr(err, "clGetDeviceInfo(" #CL_D ")"); */\
    /* printf(str, (val == CL_TRUE ? "Yes" : "No")); */\
    if (err !=  CL_SUCCESS){\
+  LOGW("GET_BOOL " #CL_D " --> %s err:%d\n",str,err);\
   index += sprintf(&result[index], "Error:" #CL_D ":%d\n", err); \
    }else{\
+  LOGV("GET_BOOL " #CL_D " --> %s val:0x%x\n",str,val);\
   index += sprintf(&result[index], str, (val == CL_TRUE ? "True" : "False")); \
    }\
 }
@@ -83,8 +103,10 @@
    /* checkErr(err, "clGetDeviceInfo(" #CL_D ")"); */\
    /* printf(str, (val == CL_TRUE ? t : f)); */\
    if (err !=  CL_SUCCESS){\
+  LOGW("GET_BOOL_CUSTOM " #CL_D " --> %s err:%d\n",str,err);\
   index += sprintf(&result[index], "Error:" #CL_D ":%d\n", err); \
    }else{\
+  LOGV("GET_BOOL_CUSTOM " #CL_D " --> %s val:0x%x\n",str,val);\
   index += sprintf(&result[index], str, (val == CL_TRUE ? "True" : "False")); \
    }\
 }
@@ -95,8 +117,10 @@
    /* checkErr(err, "clGetDeviceInfo(" #CL_D ")"); */\
    /* printf(str, ((val & test) == CL_TRUE ? "Yes" : "No")); */ \
    if (err !=  CL_SUCCESS){\
+  LOGW("GET_BITSET_AND " #CL_D " --> %s err:%d\n",str,err);\
   index += sprintf(&result[index], "Error:" #CL_D ":%d\n", err); \
    }else{\
+  LOGW("GET_BITSET_AND " #CL_D " --> %s val:0x%x\n",str,val);\
   index += sprintf(&result[index], str, (val == CL_TRUE ? "True" : "False")); \
    }\
 }
@@ -184,7 +208,11 @@ const char *getClInfoString(){
   cl_uint numPlats;
   rclGetPlatformIDs(10,platforms,&numPlats);
   int i;
-  char *result = (char*)malloc(32000);
+  char *result = (char*)malloc(64000);
+  if(result == 0 ){
+    const char *ptr = "Can't allocate JNI memory\n";
+    return ptr;
+  }
   result[0] = '\0';
   int index = 0;
   for(i=0;i<numPlats;i++){  
