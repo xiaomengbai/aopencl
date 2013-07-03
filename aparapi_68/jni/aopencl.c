@@ -40,7 +40,7 @@ static const char* DEF_SO_LOCS[]={
 	LIB_OPENCL
 /*, LIB_GLES_MALI, LIB_LLVM */
 	};
-static const int DEF_SO_LOCS_LEN = 3;
+static const int DEF_SO_LOCS_LEN = 1;
 static char* curOpenCLLibName="Unknown";
 
 static void *getCLHandle(const char** libs,int len){
