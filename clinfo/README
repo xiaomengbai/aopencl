@@ -8,10 +8,17 @@ P1=/opt/android/android-sdk-linux/platform-tools/:/opt/android/android-sdk-linux
 export NDK=/opt/android-ndk-r8d/
 export PATH=$P1:$PATH
 
+OR
+
+cat  env1.cmd
+set P1=C:\opt\android\android-sdk\platform-tools;C:\opt\android\android-sdk\tools;c:\opt\android\android-ndk-r8e
+set NDK=c:\opt\android\android-ndk-r8e
+set PATH=%P1%;%PATH%
+
  * ndk-build 
   * Above command will create JNI .so file in lib 
- * android update project -p . -n clinfo -t 11
-   * Above command will create build.xml for ant command
+ * android update project -p . -n clinfo -t 3
+   * Above command will create build.xml for ant command for Android 4.2 release (To get -t 3 ids , use: android list targets) 
  * ant debug
  * Connect phone via USB-cable to computer (Enable 'USB Debugging' in settings)
   * Ensure 'adb devices' shows your phone device

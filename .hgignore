@@ -26,3 +26,11 @@ syntax: regexp
 ^tags$
 ^.*/libs/armeabi-.*/.*$
 ^.*/obj/local/armeabi.*/.*$
+^.*/bin/.*$
+^.*/proguard-project\.txt$
+^.*/local\.properties$
+^.*/project\.properties$
+^.*/build\.xml$
+^.*/R\.java$
+^.*/BuildConfig\.java$
+^.*/qq.*\.txt
